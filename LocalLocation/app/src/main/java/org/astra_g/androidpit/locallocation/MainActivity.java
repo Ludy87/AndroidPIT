@@ -39,7 +39,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textViewHinweis = (TextView) findViewById(R.id.textViewHinweis);
+        textViewHinweis = findViewById(R.id.textViewHinweis);
+        textViewHinweis.setText(getString(R.string.loading));
         customLocationListener = new CustomLocationListener(locationListener);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
@@ -94,7 +95,9 @@ public class MainActivity extends Activity {
     private CustomLocationListenerInterface locationListener = new CustomLocationListenerInterface() {
         @Override
         public void onLocationChanged(Location location) {
-            textViewHinweis.setText(String.valueOf(location.getLatitude() + " " +String.valueOf(location.getLongitude())));
+            textViewHinweis.setText(String.format(getString(R.string.result_text_view),
+                    String.valueOf(location.getLatitude()),
+                    String.valueOf(location.getLongitude()), String.valueOf(location.getAccuracy())));
         }
 
         @Override
