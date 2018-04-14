@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
         public void onProviderDisabled(String provider) {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
-            Toast.makeText(getBaseContext(), "Gps is turned off!! ",
+            Toast.makeText(getBaseContext(), getString(R.string.gps_not_show),
                     Toast.LENGTH_SHORT).show();
         }
     };
