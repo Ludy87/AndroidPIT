@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-P'
-    buildToolsVersion '28.0.0 rc2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.0'
     defaultConfig {
         applicationId "org.astra_g.androidpit.locallocation"
         minSdkVersion 14
-        targetSdkVersion 'P'
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
