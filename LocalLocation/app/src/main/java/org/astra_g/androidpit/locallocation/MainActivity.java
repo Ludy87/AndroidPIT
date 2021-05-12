@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. by Ludy
+ * Copyright (c) 2021 by Ludy
  * Die Projekte dienen zur Anschauung und können frei genutzt werden.
  */
 
@@ -12,11 +12,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -43,7 +45,7 @@ public class MainActivity extends Activity {
         textViewHinweis.setText(getString(R.string.loading));
         customLocationListener = new CustomLocationListener(locationListener);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+        Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -72,7 +74,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+        Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse response) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -95,9 +97,50 @@ public class MainActivity extends Activity {
     private CustomLocationListenerInterface locationListener = new CustomLocationListenerInterface() {
         @Override
         public void onLocationChanged(Location location) {
-            textViewHinweis.setText(String.format(getString(R.string.result_text_view),
-                    String.valueOf(location.getLatitude()),
-                    String.valueOf(location.getLongitude()), String.valueOf(location.getAccuracy())));
+            switch (android.os.Build.VERSION.SDK_INT) {
+                case Build.VERSION_CODES.ICE_CREAM_SANDWICH:        // 14
+                case Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1:    // 15
+                case Build.VERSION_CODES.JELLY_BEAN:                // 16
+                case Build.VERSION_CODES.JELLY_BEAN_MR1:            // 17
+                case Build.VERSION_CODES.JELLY_BEAN_MR2:            // 18
+                case Build.VERSION_CODES.KITKAT:                    // 19
+                case Build.VERSION_CODES.KITKAT_WATCH:              // 20
+                case Build.VERSION_CODES.LOLLIPOP:                  // 21
+                case Build.VERSION_CODES.LOLLIPOP_MR1:              // 22
+                case Build.VERSION_CODES.M:                         // 23
+                case Build.VERSION_CODES.N:                         // 24
+                case Build.VERSION_CODES.N_MR1:                     // 25
+                case Build.VERSION_CODES.O:                         // 26
+                case Build.VERSION_CODES.O_MR1:                     // 27
+                case Build.VERSION_CODES.P:                         // 28
+                case Build.VERSION_CODES.Q:                         // 29
+                case Build.VERSION_CODES.R:                         // 30
+                default:
+                    textViewHinweis.setText("no support Device");
+                    break;
+            }
+            // API 17 - API 25
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                    && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                textViewHinweis.setText(
+                        String.format(getString(R.string.result_text_view),
+                                String.valueOf(location.getLatitude()),
+                                String.valueOf(location.getLongitude()),
+                                String.valueOf(location.getAccuracy()),
+                                String.valueOf(location.getSpeed()) // ToDo falscher Wert
+                        )
+                );
+            }
+            // API 26 - API 30
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                textViewHinweis.setText(
+                        String.format(getString(R.string.result_text_view),
+                                String.valueOf(location.getLatitude()),
+                                String.valueOf(location.getLongitude()),
+                                String.valueOf(location.getAccuracy()),
+                                String.valueOf(location.getVerticalAccuracyMeters()))
+                );
+            }
         }
 
         @Override

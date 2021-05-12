@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017. by Ludy
+ * Copyright (c) 2021 by Ludy
  * Die Projekte dienen zur Anschauung und können frei genutzt werden.
  */
 
