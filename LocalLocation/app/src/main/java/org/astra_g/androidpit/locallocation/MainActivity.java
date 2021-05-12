@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
                     && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 textViewHinweis.setText(
-                        String.format(getString(R.string.result_text_view),
+                        String.format(getString(R.string.result_text_view_25),
                                 String.valueOf(location.getLatitude()),
                                 String.valueOf(location.getLongitude()),
                                 String.valueOf(location.getAccuracy()),
@@ -138,6 +138,7 @@ public class MainActivity extends Activity {
                                 String.valueOf(location.getLatitude()),
                                 String.valueOf(location.getLongitude()),
                                 String.valueOf(location.getAccuracy()),
+                                String.valueOf(location.getSpeed()),
                                 String.valueOf(location.getVerticalAccuracyMeters()))
                 );
             }
